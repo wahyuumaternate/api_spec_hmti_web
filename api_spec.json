@@ -1,0 +1,715 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "API SPEC WEBSITE HMTI",
+    "description": "Api spec untuk website HMTI & dashboard",
+    "version": "1.0"
+  },
+  "servers": [{ "url": "https://backend-web.htmi-unkhair.my.id/api/" }],
+  "tags": [
+    {
+      "name": "AUTH",
+      "description": "Fitur authentication"
+    },
+    {
+      "name": "news",
+      "description": "Fitur news"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": ["AUTH"],
+        "summary": "Login ",
+        "description": "User [Admin & Humas] melakukan login menggunakan kredensial (akun)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "password": {
+                          "type": "string"
+                        },
+                        "token": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "validationerror": {
+                    "description": "login gagal, input tidak valid",
+                    "value": {
+                      "errors": [
+                        "Email tidak dapat ditemukan",
+                        "Email atau password tidak valid"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "servererror": {
+                    "description": "Internal server error",
+                    "value": {
+                      "errors": ["Internal server error"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/forgot-password": {
+      "post": {
+        "tags": ["AUTH"],
+        "summary": "Mengirim link reset password ke email",
+        "description": "User [Admin & Humas] melakukan forgot password, link reset password dikirim ke email untuk mengubah password",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "description": "Link reset password berhasil dikirim ke email",
+                    "value": {
+                      "data": {
+                        "messages": ["Email berhasil terkirim"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "validationerror": {
+                    "description": "forgot password gagal, input tidak valid",
+                    "value": {
+                      "errors": {
+                        "email": ["Email tidak dapat ditemukan"]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "servererror": {
+                    "description": "Internal server error",
+                    "value": {
+                      "errors": ["Internal server error"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reset-password": {
+      "patch": {
+        "tags": ["AUTH"],
+        "summary": "Mengubah password user",
+        "description": "User [Admin & Humas] melakukan reset password dengan mengisi password baru",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["password", "confirmPassword"],
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  },
+                  "confirmPassword": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "description": "Reset password berhasil",
+                    "value": {
+                      "data": ["Password berhasil diubah"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "validationerror": {
+                    "description": "Validation error",
+                    "value": {
+                      "errors": [
+                        "password atau confirmPassword boleh kosong",
+                        "password min 8 karakter",
+                        "password dan confirm password tidak sama"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "servererror": {
+                    "description": "Internal server error",
+                    "value": {
+                      "errors": ["Internal server error"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news": {
+      "get": {
+        "tags": ["news"],
+        "summary": "Mengambil semua news",
+        "description": "Mengambil semua data news dari tabel news",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "image_url": {
+                          "type": "string"
+                        },
+                        "body": {
+                          "type": "string"
+                        },
+                        "category_id": {
+                          "type": "number"
+                        },
+                        "author_id": {
+                          "type": "number"
+                        },
+                        "author_name": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "servererror": {
+                    "description": "Internal server error",
+                    "value": {
+                      "errors": ["Internal server error"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["news"],
+        "summary": "Menambahkan news",
+        "description": "User [Humas] menambahkan news di dashboard",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title", "body", "image_url", "category_id"],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "body": {
+                    "type": "string"
+                  },
+                  "image_url": {
+                    "type": "string"
+                  },
+                  "category_id": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Created": {
+                    "description": "Berhasil menambahkan news",
+                    "value": {
+                      "data": ["Berhasil menambahkan news"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "validationerror": {
+                    "description": "Gagal menambahkan news",
+                    "value": {
+                      "errors": ["Input tidak valid", "Gambar tidak valid"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "servererror": {
+                    "description": "Internal server error",
+                    "value": {
+                      "errors": ["Internal server error"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["news"],
+        "summary": "Mengubah news",
+        "description": "User [Humas] mengubah news di dashboard",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["title", "body", "image_url", "category_id"],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "body": {
+                    "type": "string"
+                  },
+                  "image_url": {
+                    "type": "string"
+                  },
+                  "category_id": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Created": {
+                    "description": "Berhasil mengubah news",
+                    "value": {
+                      "data": ["Berhasil mengubah news"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "validationerror": {
+                    "description": "Gagal mengubah news",
+                    "value": {
+                      "errors": ["Input tidak valid", "Gambar tidak valid"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "servererror": {
+                    "description": "Internal server error",
+                    "value": {
+                      "errors": ["Internal server error"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news/{id}": {
+      "delete": {
+        "tags": ["news"],
+        "summary": "Menghapus news by id",
+        "description": "User [Humas] menghapus news berdasarkan id news di dashboard",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id news",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Created": {
+                    "description": "Berhasil menghapus news",
+                    "value": {
+                      "data": ["Berhasil menghapus news"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "validationerror": {
+                    "description": "Gagal menghapus news",
+                    "value": {
+                      "errors": ["news tidak ditemukan"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "servererror": {
+                    "description": "Internal server error",
+                    "value": {
+                      "errors": ["Internal server error"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news/{slug}": {
+      "get": {
+        "tags": ["news"],
+        "summary": "Mengambil news by slug",
+        "description": "Mengambil data 1 news berdasarkan slug",
+        "parameters": [
+          {
+            "name": "slug",
+            "in": "path",
+            "description": "Slug news",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "number"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "image_url": {
+                          "type": "string"
+                        },
+                        "body": {
+                          "type": "string"
+                        },
+                        "category_id": {
+                          "type": "number"
+                        },
+                        "author_id": {
+                          "type": "number"
+                        },
+                        "author_name": {
+                          "type": "string"
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "validationerror": {
+                    "description": "Gagal menghapus news",
+                    "value": {
+                      "errors": ["news tidak ditemukan", "Input tidak valid"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "servererror": {
+                    "description": "Internal server error",
+                    "value": {
+                      "errors": ["Internal server error"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news/category": {
+      "post": {
+        "tags": ["news"],
+        "summary": "Menambahkan kategori news",
+        "description": "User [Humas] menambahkan kategori news di dashboard",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name"],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Created": {
+                    "description": "Berhasil menambahkan kategori news",
+                    "value": {
+                      "data": ["Berhasil menambahkan kategori news"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "validationerror": {
+                    "description": "Gagal menambahkan kategori news",
+                    "value": {
+                      "errors": ["Input tidak valid", "Kategori sudah ada"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "servererror": {
+                    "description": "Internal server error",
+                    "value": {
+                      "errors": ["Internal server error"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
