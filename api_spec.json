@@ -5,7 +5,8 @@
     "description": "Api spec untuk website HMTI & dashboard",
     "version": "1.0"
   },
-  "servers": [{ "url": "https://backend-web.htmi-unkhair.my.id/api/" }],
+
+  "servers": [{ "url": "https://backend-web.htmi-unkhair.my.id/api" }],
   "tags": [
     {
       "name": "AUTH",
@@ -16,6 +17,16 @@
       "description": "Fitur news"
     }
   ],
+
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+
   "paths": {
     "/login": {
       "post": {
@@ -61,9 +72,6 @@
                         "email": {
                           "type": "string"
                         },
-                        "password": {
-                          "type": "string"
-                        },
                         "token": {
                           "type": "string"
                         }
@@ -74,24 +82,26 @@
               }
             }
           },
-          "400": {
-            "description": "Bad request",
+          "422": {
+            "description": "Unprocessable Content",
             "content": {
               "application/json": {
                 "examples": {
                   "validationerror": {
                     "description": "login gagal, input tidak valid",
                     "value": {
-                      "errors": [
-                        "Email tidak dapat ditemukan",
-                        "Email atau password tidak valid"
-                      ]
+                      "message": "The email field is required. (and 1 more error)",
+                      "errors": {
+                        "email": ["The email field is required."],
+                        "password": ["The password field is required."]
+                      }
                     }
                   }
                 }
               }
             }
           },
+
           "500": {
             "description": "Internal server error",
             "content": {
@@ -184,30 +194,16 @@
         }
       }
     },
-    "/reset-password": {
-      "patch": {
+
+    "/logout": {
+      "post": {
         "tags": ["AUTH"],
-        "summary": "Mengubah password user",
-        "description": "User [Admin & Humas] melakukan reset password dengan mengisi password baru",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["password", "confirmPassword"],
-                "properties": {
-                  "password": {
-                    "type": "string"
-                  },
-                  "confirmPassword": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          },
-          "required": true
-        },
+        "description": "User [Admin & Humas] Keluar Dari halaman dashboard",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "responses": {
           "200": {
             "description": "Ok",
@@ -224,6 +220,7 @@
               }
             }
           },
+
           "400": {
             "description": "Bad Request",
             "content": {
@@ -283,26 +280,40 @@
                         "title": {
                           "type": "string"
                         },
-                        "image_url": {
+                        "image": {
                           "type": "string"
                         },
-                        "body": {
+                        "content": {
                           "type": "string"
                         },
-                        "category_id": {
+                        "slug": {
+                          "type": "string"
+                        },
+                        "excerp": {
+                          "type": "string"
+                        },
+                        "views": {
                           "type": "number"
-                        },
-                        "author_id": {
-                          "type": "number"
-                        },
-                        "author_name": {
-                          "type": "string"
                         },
                         "created_at": {
                           "type": "string"
                         },
                         "updated_at": {
                           "type": "string"
+                        },
+                        "id_categories": {
+                          "type": "number"
+                        },
+                        "news_category": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "number"
+                            },
+                            "title": {
+                              "type": "string"
+                            }
+                          }
                         }
                       }
                     }
@@ -327,8 +338,15 @@
             }
           }
         }
-      },
+      }
+    },
+    "/news/add-news": {
       "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": ["news"],
         "summary": "Menambahkan news",
         "description": "User [Humas] menambahkan news di dashboard",
@@ -337,19 +355,22 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["title", "body", "image_url", "category_id"],
+                "required": ["title", "image", "content", "id_categories"],
                 "properties": {
                   "title": {
                     "type": "string"
                   },
-                  "body": {
+                  "image": {
                     "type": "string"
                   },
-                  "image_url": {
+                  "content": {
                     "type": "string"
                   },
-                  "category_id": {
-                    "type": "number"
+                  "author_name": {
+                    "type": "string"
+                  },
+                  "id_categories": {
+                    "type": "string"
                   }
                 }
               }
@@ -366,7 +387,7 @@
                   "Created": {
                     "description": "Berhasil menambahkan news",
                     "value": {
-                      "data": ["Berhasil menambahkan news"]
+                      "message": "News Successfully Created"
                     }
                   }
                 }
@@ -404,8 +425,15 @@
             }
           }
         }
-      },
+      }
+    },
+    "/news/update-news": {
       "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": ["news"],
         "summary": "Mengubah news",
         "description": "User [Humas] mengubah news di dashboard",
@@ -414,19 +442,22 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["title", "body", "image_url", "category_id"],
+                "required": ["title", "image", "content", "id_categories"],
                 "properties": {
                   "title": {
                     "type": "string"
                   },
-                  "body": {
+                  "image": {
                     "type": "string"
                   },
-                  "image_url": {
+                  "content": {
                     "type": "string"
                   },
-                  "category_id": {
-                    "type": "number"
+                  "author_name": {
+                    "type": "string"
+                  },
+                  "id_categories": {
+                    "type": "string"
                   }
                 }
               }
@@ -484,6 +515,11 @@
     },
     "/news/{id}": {
       "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": ["news"],
         "summary": "Menghapus news by id",
         "description": "User [Humas] menghapus news berdasarkan id news di dashboard",
@@ -547,7 +583,7 @@
         }
       }
     },
-    "/news/{slug}": {
+    "/news/{slug}/detail": {
       "get": {
         "tags": ["news"],
         "summary": "Mengambil news by slug",
