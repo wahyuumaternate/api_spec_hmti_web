@@ -9,12 +9,10 @@
   "servers": [{ "url": "https://backend-web.htmi-unkhair.my.id/api" }],
   "tags": [
     {
-      "name": "AUTH",
-      "description": "Fitur authentication"
+      "name": "AUTH"
     },
     {
-      "name": "NEWS",
-      "description": "Fitur news"
+      "name": "NEWS"
     }
   ],
 
@@ -677,8 +675,131 @@
         }
       }
     },
-    "/news/category": {
+    "/news-category": {
+      "get": {
+        "tags": ["NEWS"],
+        "description": "Mengambil semua data news category",
+        "responses": {
+          "200": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Created": {
+                    "description": "Berhasil menambahkan kategori news",
+                    "value": {
+                      "data": [
+                        {
+                          "id": 1,
+                          "title": "ada",
+                          "created_at": null,
+                          "updated_at": null
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "validationerror": {
+                    "description": "Gagal menambahkan kategori news",
+                    "value": {
+                      "errors": ["Input tidak valid", "Kategori sudah ada"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "servererror": {
+                    "description": "Internal server error",
+                    "value": {
+                      "errors": ["Internal server error"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news-category/{slug}": {
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "tags": ["NEWS"],
+        "description": "Hapus data news category",
+        "responses": {
+          "200": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Created": {
+                    "description": "Berhasil hapus kategori news",
+                    "value": {
+                      "message": "Category News Successfully deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "validationerror": {
+                    "description": "Gagal hapus kategori news",
+                    "value": {
+                      "errors": ["Input tidak valid", "Kategori sudah ada"]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "servererror": {
+                    "description": "Internal server error",
+                    "value": {
+                      "errors": ["Internal server error"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/news-category/add": {
       "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "tags": ["NEWS"],
         "summary": "Menambahkan kategori news",
         "description": "User [Humas] menambahkan kategori news di dashboard",
