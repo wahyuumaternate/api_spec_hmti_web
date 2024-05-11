@@ -13,7 +13,7 @@
       "description": "Fitur authentication"
     },
     {
-      "name": "news",
+      "name": "NEWS",
       "description": "Fitur news"
     }
   ],
@@ -260,7 +260,7 @@
     },
     "/news": {
       "get": {
-        "tags": ["news"],
+        "tags": ["NEWS"],
         "summary": "Mengambil semua news",
         "description": "Mengambil semua data news dari tabel news",
         "responses": {
@@ -347,7 +347,7 @@
             "bearerAuth": []
           }
         ],
-        "tags": ["news"],
+        "tags": ["NEWS"],
         "summary": "Menambahkan news",
         "description": "User [Humas] menambahkan news di dashboard",
         "requestBody": {
@@ -434,7 +434,7 @@
             "bearerAuth": []
           }
         ],
-        "tags": ["news"],
+        "tags": ["NEWS"],
         "summary": "Mengubah news",
         "description": "User [Humas] mengubah news di dashboard",
         "requestBody": {
@@ -520,7 +520,7 @@
             "bearerAuth": []
           }
         ],
-        "tags": ["news"],
+        "tags": ["NEWS"],
         "summary": "Menghapus news by id",
         "description": "User [Humas] menghapus news berdasarkan id news di dashboard",
         "parameters": [
@@ -585,7 +585,7 @@
     },
     "/news/{slug}/detail": {
       "get": {
-        "tags": ["news"],
+        "tags": ["NEWS"],
         "summary": "Mengambil news by slug",
         "description": "Mengambil data 1 news berdasarkan slug",
         "parameters": [
@@ -679,7 +679,7 @@
     },
     "/news/category": {
       "post": {
-        "tags": ["news"],
+        "tags": ["NEWS"],
         "summary": "Menambahkan kategori news",
         "description": "User [Humas] menambahkan kategori news di dashboard",
         "requestBody": {
