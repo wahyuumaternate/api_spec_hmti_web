@@ -1,0 +1,252 @@
+openapi: 3.0.0
+info:
+  title: HMTI Unkhair API Documentation
+  version: 1.0.0
+  description: API documentation for HMTI Unkhair organization
+
+servers:
+  - url: https://backend-web.htmi-unkhair.my.id/api
+    description: HMTI Unkhair API server
+
+paths:
+  /sejarah-filosofi:
+    get:
+      summary: Get history and philosophy information
+      responses:
+        '200':
+          description: History and philosophy details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sejarah:
+                    $ref: '#/components/schemas/Biografi'
+                  filosofi:
+                    $ref: '#/components/schemas/Biografi'
+        '404':
+          description: Information not found
+        '500':
+          description: Internal server error
+
+  /visi-misi-tujuan:
+    get:
+      summary: Get vision, mission, and goals information
+      responses:
+        '200':
+          description: Vision, mission, and goals details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  visi:
+                    $ref: '#/components/schemas/Biografi'
+                  misi:
+                    $ref: '#/components/schemas/Biografi'
+                  tujuan:
+                    $ref: '#/components/schemas/Biografi'
+        '404':
+          description: Information not found
+        '500':
+          description: Internal server error
+
+  /struktur:
+    get:
+      summary: Get organizational structure information
+      responses:
+        '200':
+          description: Organizational structure details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pengurus:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Pengurus'
+        '404':
+          description: Information not found
+        '500':
+          description: Internal server error
+
+  /semua-berita:
+    get:
+      summary: Get all news articles
+      responses:
+        '200':
+          description: List of all news articles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Berita'
+        '500':
+          description: Internal server error
+
+  /berita/{slug}:
+    get:
+      summary: Get news article by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Slug of the news article
+      responses:
+        '200':
+          description: Details of the news article
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Berita'
+        '404':
+          description: News article not found
+        '500':
+          description: Internal server error
+          
+  /kategori/{slug}/berita:
+    parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Slug of the category
+    get:
+      summary: Get news articles by category slug
+      responses:
+        '200':
+          description: List of news articles in the category
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  kategori:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: The unique identifier of the category
+                      judul_kategori:
+                        type: string
+                        description: The title of the category
+                      slug:
+                        type: string
+                        description: The slug of the category
+                      created_at:
+                        type: string
+                        format: date-time
+                        description: The date and time when the category was created
+                      updated_at:
+                        type: string
+                        format: date-time
+                        description: The date and time when the category was last updated
+                  berita:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Berita'
+        '404':
+          description: Category not found
+        '500':
+          description: Internal server error
+
+  /kategori-berita:
+    get:
+      summary: Get all news categories
+      responses:
+        '200':
+          description: List of all news categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KategoriBerita'
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    Biografi:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier of the biografi
+        judul:
+          type: string
+          description: The title of the biografi
+        konten:
+          type: string
+          description: The content of the biografi
+        gambar:
+          type: string
+          description: The image URL associated with the biografi
+
+    Pengurus:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier of the pengurus
+        nama:
+          type: string
+          description: The name of the pengurus
+        foto:
+          type: string
+          description: The photo URL of the pengurus
+        bidang:
+          type: string
+          description: The field of expertise of the pengurus
+        jabatan:
+          type: string
+          description: The position held by the pengurus
+
+    Berita:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier of the berita
+        judul:
+          type: string
+          description: The title of the berita
+        slug:
+          type: string
+          description: The slug of the berita
+        excerp:
+          type: string
+          description: The excerpt of the berita
+        konten:
+          type: string
+          description: The content of the berita
+        dibaca:
+          type: integer
+          description: Number of times the berita has been read
+        gambar:
+          type: string
+          description: The image URL associated with the berita
+        penulis:
+          type: string
+          description: The author of the berita
+        kategori_id:
+          type: integer
+          description: The category ID of the berita
+
+    KategoriBerita:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique identifier of the news category
+        judul_kategori:
+          type: string
+          description: The title of the news category
+        slug:
+          type: string
+          description: The slug of the news category
