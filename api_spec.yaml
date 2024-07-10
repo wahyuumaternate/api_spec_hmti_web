@@ -1,62 +1,98 @@
 openapi: 3.0.0
 info:
-  title: HMTI Unkhair API Documentation
+  title: HTMI Unkhair Backend API
+  description: Endpoint definitions for HTMI Unkhair backend API
   version: 1.0.0
-  description: API documentation for HMTI Unkhair organization
-
 servers:
   - url: https://backend-web.htmi-unkhair.my.id/api
     description: HMTI Unkhair API server
-
+    
 paths:
-  /sejarah-filosofi:
+  /api/sejarah-filosofi:
     get:
-      summary: Get history and philosophy information
+      summary: Get sejarah and filosofi
       responses:
         '200':
-          description: History and philosophy details
+          description: Successful response
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   sejarah:
-                    $ref: '#/components/schemas/Biografi'
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      judul:
+                        type: string
+                      konten:
+                        type: string
+                      gambar:
+                        type: string
                   filosofi:
-                    $ref: '#/components/schemas/Biografi'
-        '404':
-          description: Information not found
-        '500':
-          description: Internal server error
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      judul:
+                        type: string
+                      konten:
+                        type: string
+                      gambar:
+                        type: string
 
-  /visi-misi-tujuan:
+  /api/visi-misi-tujuan:
     get:
-      summary: Get vision, mission, and goals information
+      summary: Get visi, misi, and tujuan
       responses:
         '200':
-          description: Vision, mission, and goals details
+          description: Successful response
           content:
             application/json:
               schema:
                 type: object
                 properties:
                   visi:
-                    $ref: '#/components/schemas/Biografi'
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      judul:
+                        type: string
+                      konten:
+                        type: string
+                      gambar:
+                        type: string
                   misi:
-                    $ref: '#/components/schemas/Biografi'
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      judul:
+                        type: string
+                      konten:
+                        type: string
+                      gambar:
+                        type: string
                   tujuan:
-                    $ref: '#/components/schemas/Biografi'
-        '404':
-          description: Information not found
-        '500':
-          description: Internal server error
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      judul:
+                        type: string
+                      konten:
+                        type: string
+                      gambar:
+                        type: string
 
-  /struktur:
+  /api/struktur:
     get:
-      summary: Get organizational structure information
+      summary: Get struktur pengurus
       responses:
         '200':
-          description: Organizational structure details
+          description: Successful response
           content:
             application/json:
               schema:
@@ -65,188 +101,493 @@ paths:
                   pengurus:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Pengurus'
-        '404':
-          description: Information not found
-        '500':
-          description: Internal server error
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        nama:
+                          type: string
+                        foto:
+                          type: string
+                        bidang:
+                          type: string
+                        jabatan:
+                          type: string
 
-  /semua-berita:
+  /api/semua-berita:
     get:
-      summary: Get all news articles
+      summary: Get semua berita
       responses:
         '200':
-          description: List of all news articles
+          description: Successful response
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Berita'
-        '500':
-          description: Internal server error
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    judul:
+                      type: string
+                    slug:
+                      type: string
+                    excerp:
+                      type: string
+                    konten:
+                      type: string
+                    dibaca:
+                      type: integer
+                    gambar:
+                      type: string
+                    penulis:
+                      type: string
+                    kategori_id:
+                      type: integer
+                    created_at:
+                      type: string
+                    kategori:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        judul_kategori:
+                          type: string
+                        slug:
+                          type: string
 
-  /berita/{slug}:
+  /api/berita/{slug}:
     get:
-      summary: Get news article by slug
+      summary: Get detail berita by slug
       parameters:
         - name: slug
           in: path
           required: true
           schema:
             type: string
-          description: Slug of the news article
       responses:
         '200':
-          description: Details of the news article
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Berita'
-        '404':
-          description: News article not found
-        '500':
-          description: Internal server error
-          
-  /kategori/{slug}/berita:
-    parameters:
-      - name: slug
-        in: path
-        required: true
-        schema:
-          type: string
-        description: Slug of the category
-    get:
-      summary: Get news articles by category slug
-      responses:
-        '200':
-          description: List of news articles in the category
+          description: Successful response
           content:
             application/json:
               schema:
                 type: object
                 properties:
+                  id:
+                    type: integer
+                  judul:
+                    type: string
+                  slug:
+                    type: string
+                  excerp:
+                    type: string
+                  konten:
+                    type: string
+                  dibaca:
+                    type: integer
+                  gambar:
+                    type: string
+                  penulis:
+                    type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  kategori_id:
+                    type: integer
                   kategori:
                     type: object
                     properties:
                       id:
                         type: integer
-                        description: The unique identifier of the category
                       judul_kategori:
                         type: string
-                        description: The title of the category
                       slug:
                         type: string
-                        description: The slug of the category
-                      created_at:
-                        type: string
-                        format: date-time
-                        description: The date and time when the category was created
-                      updated_at:
-                        type: string
-                        format: date-time
-                        description: The date and time when the category was last updated
-                  berita:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Berita'
-        '404':
-          description: Category not found
-        '500':
-          description: Internal server error
 
-  /kategori-berita:
+  /api/kategori/{slug}/berita:
     get:
-      summary: Get all news categories
+      summary: Get berita by kategori slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         '200':
-          description: List of all news categories
+          description: Successful response
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/KategoriBerita'
-        '500':
-          description: Internal server error
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    judul:
+                      type: string
+                    slug:
+                      type: string
+                    excerp:
+                      type: string
+                    konten:
+                      type: string
+                    dibaca:
+                      type: integer
+                    gambar:
+                      type: string
+                    penulis:
+                      type: string
+                    kategori_id:
+                      type: integer
+                    created_at:
+                      type: string
+                    kategori:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        judul_kategori:
+                          type: string
+                        slug:
+                          type: string
 
-components:
-  schemas:
-    Biografi:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: The unique identifier of the biografi
-        judul:
-          type: string
-          description: The title of the biografi
-        konten:
-          type: string
-          description: The content of the biografi
-        gambar:
-          type: string
-          description: The image URL associated with the biografi
+  /api/kategori-berita:
+    get:
+      summary: Get kategori berita
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    judul_kategori:
+                      type: string
+                    slug:
+                      type: string
 
-    Pengurus:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: The unique identifier of the pengurus
-        nama:
-          type: string
-          description: The name of the pengurus
-        foto:
-          type: string
-          description: The photo URL of the pengurus
-        bidang:
-          type: string
-          description: The field of expertise of the pengurus
-        jabatan:
-          type: string
-          description: The position held by the pengurus
+  /api/semua-projects:
+    get:
+      summary: Get semua projects
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    judul:
+                      type: string
+                    slug:
+                      type: string
+                    excerp:
+                      type: string
+                    konten:
+                      type: string
+                    gambar_utama:
+                      type: string
+                    gambar1:
+                      type: string
+                    gambar2:
+                      type: string
+                    gambar3:
+                      type: string
+                    gambar4:
+                      type: string
+                    gambar5:
+                      type: string
+                    pembuat:
+                      type: string
+                    created_at:
+                      type: string
+                    kategori_id:
+                      type: integer
+                    kategori:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        judul_kategori:
+                          type: string
+                        slug:
+                          type: string
 
-    Berita:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: The unique identifier of the berita
-        judul:
-          type: string
-          description: The title of the berita
-        slug:
-          type: string
-          description: The slug of the berita
-        excerp:
-          type: string
-          description: The excerpt of the berita
-        konten:
-          type: string
-          description: The content of the berita
-        dibaca:
-          type: integer
-          description: Number of times the berita has been read
-        gambar:
-          type: string
-          description: The image URL associated with the berita
-        penulis:
-          type: string
-          description: The author of the berita
-        kategori_id:
-          type: integer
-          description: The category ID of the berita
+  /api/kategori-projects:
+    get:
+      summary: Get kategori projects
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    judul_kategori:
+                      type: string
+                    slug:
+                      type: string
 
-    KategoriBerita:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: The unique identifier of the news category
-        judul_kategori:
-          type: string
-          description: The title of the news category
-        slug:
-          type: string
-          description: The slug of the news category
+  /api/project/{slug}:
+    get:
+      summary: Get detail project by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  judul:
+                    type: string
+                  slug:
+                    type: string
+                  excerp:
+                    type: string
+                  konten:
+                    type: string
+                  gambar_utama:
+                    type: string
+                  gambar1:
+                    type: string
+                  gambar2:
+                    type: string
+                  gambar3:
+                    type: string
+                  gambar4:
+                    type: string
+                  gambar5:
+                    type: string
+                  pembuat:
+                    type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  kategori_id:
+                    type: integer
+                  kategori:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      judul_kategori:
+                        type: string
+                      slug:
+                        type: string
+
+  /api/kategori/{slug}/projects:
+    get:
+      summary: Get projects by kategori slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    judul:
+                      type: string
+                    slug:
+                      type: string
+                    excerp:
+                      type: string
+                    konten:
+                      type: string
+                    gambar_utama:
+                      type: string
+                    gambar1:
+                      type: string
+                    gambar2:
+                      type: string
+                    gambar3:
+                      type: string
+                    gambar4:
+                      type: string
+                    gambar5:
+                      type: string
+                    pembuat:
+                      type: string
+                    created_at:
+                      type: string
+                    kategori_id:
+                      type: integer
+                    kategori:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        judul_kategori:
+                          type: string
+                        slug:
+                          type: string
+
+  /api/galeri-tampilkan:
+    get:
+      summary: Get galeri yang ingin ditampilkan pada banner
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    gambar:
+                      type: string
+                    tampilkan:
+                      type: integer
+                    created_at:
+                      type: string
+
+  /api/galeri-terbaru:
+    get:
+      summary: Get galeri dengan foto paling baru
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    gambar:
+                      type: string
+                    tampilkan:
+                      type: integer
+                    created_at:
+                      type: string
+
+  /api/galeri-terlama:
+    get:
+      summary: Get galeri dengan foto paling lama
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    gambar:
+                      type: string
+                    tampilkan:
+                      type: integer
+                    created_at:
+                      type: string
+
+  /api/kontak:
+    post:
+      summary: Mengirimkan pesan kontak
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nama:
+                  type: string
+                email:
+                  type: string
+                subject:
+                  type: string
+                pesan:
+                  type: string
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  kontak:
+                    type: object
+                    properties:
+                      nama:
+                        type: string
+                      email:
+                        type: string
+                      subject:
+                        type: string
+                      pesan:
+                        type: string
+                      updated_at:
+                        type: string
+                      created_at:
+                        type: string
+                      id:
+                        type: integer
+
+  /api/event:
+    get:
+      summary: Get daftar event
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    nama:
+                      type: string
+                    url:
+                      type: string
