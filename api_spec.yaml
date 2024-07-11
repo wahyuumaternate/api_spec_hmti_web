@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: HTMI Unkhair Backend API
   description: Endpoint definitions for HTMI Unkhair backend API
-  version: 1.1.3
+  version: 2.1.1
 servers:
   - url: https://backend-web.htmi-unkhair.my.id/api
     description: HMTI Unkhair API server
@@ -391,6 +391,55 @@ paths:
                       type: string
                     slug:
                       type: string
+
+  /berita-pilihan:
+    get:
+      summary: Get berita pilihan
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    judul:
+                      type: string
+                    slug:
+                      type: string
+                    excerp:
+                      type: string
+                    konten:
+                      type: string
+                    dibaca:
+                      type: integer
+                    gambar:
+                      type: string
+                    penulis:
+                      type: string
+                    kategori_id:
+                      type: integer
+                    created_at:
+                      type: string
+                    kategori:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        judul_kategori:
+                          type: string
+                        slug:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
 
   /semua-projects:
     get:
