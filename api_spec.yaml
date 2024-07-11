@@ -2,13 +2,13 @@ openapi: 3.0.0
 info:
   title: HTMI Unkhair Backend API
   description: Endpoint definitions for HTMI Unkhair backend API
-  version: 2.1.1
+  version: 2.1.2
 servers:
   - url: https://backend-web.htmi-unkhair.my.id/api
     description: HMTI Unkhair API server
 
 paths:
-  /api/sejarah-filosofi:
+  /sejarah-filosofi:
     get:
       summary: Get sejarah and filosofi
       responses:
@@ -42,7 +42,7 @@ paths:
                       gambar:
                         type: string
 
-  /api/visi-misi-tujuan:
+  /visi-misi-tujuan:
     get:
       summary: Get visi, misi, and tujuan
       responses:
@@ -87,7 +87,7 @@ paths:
                       gambar:
                         type: string
 
-  /api/struktur:
+  /struktur:
     get:
       summary: Get struktur pengurus
       responses:
@@ -114,7 +114,7 @@ paths:
                         jabatan:
                           type: string
 
-  /api/semua-berita:
+  /semua-berita:
     get:
       summary: Get semua berita
       responses:
@@ -157,7 +157,7 @@ paths:
                         slug:
                           type: string
 
-  /api/berita/{slug}:
+  /berita/{slug}:
     get:
       summary: Get detail berita by slug
       parameters:
@@ -206,7 +206,7 @@ paths:
                       slug:
                         type: string
 
-  /api/kategori/{slug}/berita:
+  /kategori/{slug}/berita:
     get:
       summary: Get berita by kategori slug
       parameters:
@@ -254,8 +254,68 @@ paths:
                           type: string
                         slug:
                           type: string
+  /search:
+    get:
+      summary: Cari berita berdasarkan kata kunci
+      parameters:
+        - name: cari
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Kata kunci untuk mencari berita
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    judul:
+                      type: string
+                    slug:
+                      type: string
+                    excerp:
+                      type: string
+                    konten:
+                      type: string
+                    dibaca:
+                      type: integer
+                    gambar:
+                      type: string
+                    penulis:
+                      type: string
+                    created_at:
+                      type: string
+                      format: date-time
+                    updated_at:
+                      type: string
+                      format: date-time
+                    kategori_id:
+                      type: integer
+                    kategori:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        judul_kategori:
+                          type: string
+                        slug:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
 
-  /api/kategori-berita:
+
+  /kategori-berita:
     get:
       summary: Get kategori berita
       responses:
@@ -275,7 +335,7 @@ paths:
                     slug:
                       type: string
 
-  /api/semua-projects:
+  /semua-projects:
     get:
       summary: Get semua projects
       responses:
@@ -326,7 +386,7 @@ paths:
                         slug:
                           type: string
 
-  /api/kategori-projects:
+  /kategori-projects:
     get:
       summary: Get kategori projects
       responses:
@@ -346,7 +406,7 @@ paths:
                     slug:
                       type: string
 
-  /api/project/{slug}:
+  /project/{slug}:
     get:
       summary: Get detail project by slug
       parameters:
@@ -403,9 +463,9 @@ paths:
                       slug:
                         type: string
 
-  /api/kategori/{slug}/projects:
+  /kategori/{slug}/projects:
     get:
-      summary: Get projects by kategori slug
+      summary: Munculkan Data project berdasarkan kategori
       parameters:
         - name: slug
           in: path
@@ -460,7 +520,7 @@ paths:
                         slug:
                           type: string
 
-  /api/galeri-tampilkan:
+  /galeri-tampilkan:
     get:
       summary: Get galeri yang ingin ditampilkan pada banner
       responses:
@@ -482,7 +542,7 @@ paths:
                     created_at:
                       type: string
 
-  /api/galeri-terbaru:
+  /galeri-terbaru:
     get:
       summary: Get galeri dengan foto paling baru
       responses:
@@ -504,7 +564,7 @@ paths:
                     created_at:
                       type: string
 
-  /api/galeri-terlama:
+  /galeri-terlama:
     get:
       summary: Get galeri dengan foto paling lama
       responses:
@@ -526,7 +586,7 @@ paths:
                     created_at:
                       type: string
 
-  /api/kontak:
+  /kontak:
     post:
       summary: Mengirimkan pesan kontak
       requestBody:
@@ -572,7 +632,7 @@ paths:
                       id:
                         type: integer
 
-  /api/event:
+  /event:
     get:
       summary: Get daftar event
       responses:
@@ -590,4 +650,114 @@ paths:
                     nama:
                       type: string
                     url:
+                      type: string
+  
+  /beranda:
+    get:
+      summary: Get Data Beranda
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  berita:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        judul:
+                          type: string
+                        slug:
+                          type: string
+                        excerp:
+                          type: string
+                        konten:
+                          type: string
+                        dibaca:
+                          type: integer
+                        gambar:
+                          type: string
+                        penulis:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                        kategori_id:
+                          type: integer
+                        kategori:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                            judul_kategori:
+                              type: string
+                            slug:
+                              type: string
+                            created_at:
+                              type: string
+                              format: date-time
+                            updated_at:
+                              type: string
+                              format: date-time
+                  galeri:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        gambar:
+                          type: string
+                        tampilkan:
+                          type: integer
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+                  partners:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        nama:
+                          type: string
+                        logo:
+                          type: string
+                        created_at:
+                          type: string
+                          format: date-time
+                        updated_at:
+                          type: string
+                          format: date-time
+
+  /partners:
+    get:
+      summary: Get daftar partners
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    nama:
+                      type: string
+                    logo:
                       type: string
