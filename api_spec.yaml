@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: HTMI Unkhair Backend API
   description: Endpoint definitions for HTMI Unkhair backend API
-  version: 2.1.2
+  version: 2.1.1
 servers:
   - url: https://backend-web.htmi-unkhair.my.id/api
     description: HMTI Unkhair API server
@@ -89,7 +89,7 @@ paths:
 
   /struktur:
     get:
-      summary: Get struktur pengurus
+      summary: Get Struktur Pengurus
       responses:
         '200':
           description: Successful response
@@ -98,21 +98,78 @@ paths:
               schema:
                 type: object
                 properties:
-                  pengurus:
+                  ketum:
+                    type: object
+                    nullable: true
+                    properties:
+                      nama:
+                        type: string
+                        example: "s"
+                      foto:
+                        type: string
+                        example: "fotoPengurus/0zqT0BBmKVUOWgyBLQZcuSt4jHZH9pd4FDdyoAVp.jpg"
+                  sekum:
+                    type: object
+                    nullable: true
+                    properties:
+                      nama:
+                        type: string
+                        example: "Sekum Kontol"
+                      foto:
+                        type: string
+                        example: "fotoPengurus/wHCn5tAXOmusyTLjjWkLSP6QU5JoAyXhEh2jK2mG.jpg"
+                  bendum:
+                    type: object
+                    nullable: true
+                    properties:
+                      nama:
+                        type: string
+                        nullable: true
+                      foto:
+                        type: string
+                        nullable: true
+                  bidang:
                     type: array
                     items:
                       type: object
                       properties:
-                        id:
-                          type: integer
-                        nama:
+                        nama_bidang:
                           type: string
-                        foto:
+                          example: "Penggerak Aparatur Organisasi (P.A.O)"
+                        singkatan:
                           type: string
-                        bidang:
-                          type: string
-                        jabatan:
-                          type: string
+                          nullable: true
+                          example: null
+                        kabid:
+                          type: object
+                          nullable: true
+                          properties:
+                            nama:
+                              type: string
+                              example: "Wahyu Cogan"
+                            foto:
+                              type: string
+                              example: "fotoPengurus/yIvt4kcjQ2XWDAIeABTQVgaq34uvDL0ns1yp9W7Z.jpg"
+                        sekbid:
+                          type: object
+                          nullable: true
+                          properties:
+                            nama:
+                              type: string
+                              nullable: true
+                            foto:
+                              type: string
+                              nullable: true
+                        anggota:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              nama:
+                                type: string
+                              foto:
+                                type: string
+                          example: []
 
   /semua-berita:
     get:
